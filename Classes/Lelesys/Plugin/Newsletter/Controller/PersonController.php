@@ -96,6 +96,11 @@ class PersonController extends ActionController {
 				$this->addFlashMessage($newPerson->getPrimaryElectronicAddress()->getIdentifier() . $message, $header, \TYPO3\Flow\Error\Message::SEVERITY_ERROR);
 				$this->redirect("new");
 			} else {
+
+				// SL mod
+				$newPerson->setAcceptsHtml(TRUE);
+				$newPerson->addGroup( $this->partyService->listAll()->getFirst() );
+
 				$this->personService->create($newPerson, $currentLocale['identifier']);
 				$header = 'Thank you for subscribing to our newsletter.';
 				$message = $this->centralService->translate('lelesys.plugin.newsletter.cannot.subscribed');

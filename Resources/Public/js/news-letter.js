@@ -20,17 +20,19 @@ jQuery(document).ready(function() {
 			// Specify the validation error messages
 		messages: {
 			'--lelesys_plugin_newsletter-subscribtion[newPerson][name][firstName]': {
-				required: "This field is required"
+				required: "Dieses Feld wird benötigt"
+				//required: "This field is required"
 			},
 			'--lelesys_plugin_newsletter-subscribtion[newPerson][name][lastName]': {
-				required: "This field is required"
+				required: "Dieses Feld wird benötigt"
 			},
 			'--lelesys_plugin_newsletter-subscribtion[newPerson][primaryElectronicAddress][identifier]': {
-				required: "This field is required",
-				email: "Please specify valid email address"
+				required: "Dieses Feld wird benötigt",
+				email: "Bitte geben Sie eine korrekte E-Mail Adresse an"
+				//email: "Please specify valid email address"
 			},
 			'--lelesys_plugin_newsletter-subscribtion[newPerson][gender]': {
-				required: "This field is required"
+				required: "Dieses Feld wird benötigt"
 			}
 		},
 		submitHandler: function(form) {

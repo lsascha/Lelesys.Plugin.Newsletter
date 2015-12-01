@@ -174,6 +174,7 @@ class PersonService {
 	 */
 	public function create(\Lelesys\Plugin\Newsletter\Domain\Model\Recipient\Person $newPerson, $currentLocale = NULL) {
 		$newPerson->setSubscribedToNewsletter(TRUE);
+
 		$this->personRepository->add($newPerson);
 		// To check if the user is subcribed user
 		$code = sha1($newPerson->getPrimaryElectronicAddress()->getIdentifier() . $newPerson->getUuid());
