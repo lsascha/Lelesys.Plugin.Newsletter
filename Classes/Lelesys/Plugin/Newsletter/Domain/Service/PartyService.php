@@ -68,6 +68,15 @@ class PartyService {
 	public function listAll() {
 		return $this->partyRepository->findAll();
 	}
+	/**
+	 * find by group title
+	 *
+	 * @param  String $title group title
+	 * @return \Lelesys\Plugin\Newsletter\Domain\Model\Recipient\Group\Party party Party object
+	 */
+	public function findByTitle($title) {
+		return $this->partyRepository->findOneByTitle($title);
+	}
 
 	/**
 	 * Adds new group party

@@ -137,6 +137,88 @@ class PersonController extends NewsletterManagementController {
 	}
 
 	/**
+	 * csv to array
+	 *
+	 * @param String $string csv string
+	 * @param String $row_delimiter row delimiter
+	 * @param String $delimiter delimiter
+	 * @param String $enclosure string enclosure
+	 * @param String $escape escape string
+	 * @return array
+	 */
+	static function csv_to_array($string='', $row_delimiter=PHP_EOL, $delimiter = "," , $enclosure = '"' , $escape = "\\" )
+	{
+	    $rows = array_filter(explode($row_delimiter, $string));
+	    $header = NULL;
+	    $data = array();
+
+	    foreach($rows as $row)
+	    {
+	        $row = str_getcsv ($row, $delimiter, $enclosure , $escape);
+
+	        if(!$header)
+	            $header = $row;
+	        else
+	            $data[] = array_combine($header, $row);
+	    }
+
+	    return $data;
+	}
+
+
+	/**
+	 * Import csv form
+	 * 
+	 * @return void
+	 */
+	public function importCsvAction() {
+		$this->view->assign('groups', $this->partyService->listAll());
+	}
+
+	/**
+	 * Import new recipients
+	 *
+	 * @param String $personCSVList CSV Person List
+	 * @param String $groupTitle Title of Group
+	 * @return void
+	 */
+	public function importListAction(String $personCSVList, String $groupTitle) {
+		$csvArray = self::csv_to_array ( $personCSVList );
+		$recipientCount = 0;
+		$recipientExistingCount = 0;
+
+		foreach ($csvArray as $singlePerson) {
+			$newPerson = new \Lelesys\Plugin\Newsletter\Domain\Model\Recipient\Person();
+			$newPerson->setName(new \TYPO3\Party\Domain\Model\PersonName('', $singlePerson['firstName'], $singlePerson['lastName']));
+			$personElectronicAddress = new \TYPO3\Party\Domain\Model\ElectronicAddress();
+			$personElectronicAddress->setIdentifier($singlePerson['eMail']);
+			$personElectronicAddress->setApproved(TRUE);
+			$newPerson->addElectronicAddress($personElectronicAddress);
+			$newPerson->setAcceptsHtml(TRUE);
+			$newPerson->setSubscribedToNewsletter(TRUE);
+			if ($singlePerson['gender'] == 'w') {
+				$newPerson->setGender(TRUE);
+			} else {
+				$newPerson->setGender(FALSE);
+			}
+			$newPerson->addGroup($this->partyService->findByTitle($groupTitle));
+
+			$isExistingUser = $this->personService->isExistingUser($newPerson);
+			if (($isExistingUser !== NULL) && ($isExistingUser === TRUE)) {
+				// user exists
+				$recipientExistingCount++;
+			} else {
+				$this->personService->create($newPerson);
+				$recipientCount++;
+			}
+		}
+		$header = 'Creatednew recipients.';
+		$message = 'Created '.$recipientCount.' new recipients from CSV. '.$recipientExistingCount.' already existed.';
+		$this->addFlashMessage($message, $header, \TYPO3\Flow\Error\Message::SEVERITY_OK);
+		$this->redirect('importCsv');
+	}
+
+	/**
 	 * Edit recipient info
 	 *
 	 * @param \Lelesys\Plugin\Newsletter\Domain\Model\Recipient\Person $person Person object
