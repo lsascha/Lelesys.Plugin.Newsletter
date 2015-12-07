@@ -10,7 +10,7 @@
             <div class="neos-control-group">
                 <label for="groupTitle">Group Title</label>
                 <div class="neos-controls">
-                    <f:form.textfield property="groupTitle" id="groupTitle" class="required not-empty" />
+                    <f:form.textfield name="groupTitle" id="groupTitle" class="required not-empty" />
                     <f:render partial="FormErrors" arguments="{for: 'groupTitle'}" />
                 </div>
             </div>
@@ -18,7 +18,7 @@
                 <label for="personCSVList">CSV List (with headline [firstName,lastName,eMail,gender])</label>
 
                 <div class="neos-controls">
-                    <f:form.textarea property="personCSVList" id="personCSVList" class="required not-empty span3" rows="10"/>
+                    <f:form.textarea name="personCSVList" id="personCSVList" class="required not-empty span3" rows="10"/>
                 </div>
             </div>
             <div class="neos-alert neos-alert-error form-error error checkvalid" style="display: none;"></div>
