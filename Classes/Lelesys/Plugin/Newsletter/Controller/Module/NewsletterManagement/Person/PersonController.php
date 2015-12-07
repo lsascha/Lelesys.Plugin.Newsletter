@@ -139,11 +139,11 @@ class PersonController extends NewsletterManagementController {
 	/**
 	 * csv to array
 	 *
-	 * @param String $string csv string
-	 * @param String $row_delimiter row delimiter
-	 * @param String $delimiter delimiter
-	 * @param String $enclosure string enclosure
-	 * @param String $escape escape string
+	 * @param string $string csv string
+	 * @param string $row_delimiter row delimiter
+	 * @param string $delimiter delimiter
+	 * @param string $enclosure string enclosure
+	 * @param string $escape escape string
 	 * @return array
 	 */
 	static function csv_to_array($string='', $row_delimiter=PHP_EOL, $delimiter = "," , $enclosure = '"' , $escape = "\\" )
@@ -178,11 +178,11 @@ class PersonController extends NewsletterManagementController {
 	/**
 	 * Import new recipients
 	 *
-	 * @param String $personCSVList CSV Person List
-	 * @param String $groupTitle Title of Group
+	 * @param string $personCSVList CSV Person List
+	 * @param string $groupTitle Title of Group
 	 * @return void
 	 */
-	public function importListAction(String $personCSVList, String $groupTitle) {
+	public function importListAction($personCSVList, $groupTitle) {
 		$csvArray = self::csv_to_array ( $personCSVList );
 		$recipientCount = 0;
 		$recipientExistingCount = 0;
