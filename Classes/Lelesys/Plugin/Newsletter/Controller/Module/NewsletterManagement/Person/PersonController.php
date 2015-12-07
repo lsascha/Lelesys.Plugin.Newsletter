@@ -160,8 +160,9 @@ class PersonController extends NewsletterManagementController {
 
 		foreach ($csvArray as $singlePerson) {
 			$newPerson = new \Lelesys\Plugin\Newsletter\Domain\Model\Recipient\Person();
-			$newPerson->setName(new \TYPO3\Party\Domain\Model\PersonName('', $singlePerson['firstName'], $singlePerson['lastName']));
+			$singlePersonName = new \TYPO3\Party\Domain\Model\PersonName('', $singlePerson['firstName'], '', $singlePerson['lastName']);
 			$personElectronicAddress = new \TYPO3\Party\Domain\Model\ElectronicAddress();
+			$newPerson->setName($singlePersonName);
 			$personElectronicAddress->setIdentifier($singlePerson['eMail']);
 			$personElectronicAddress->setApproved(TRUE);
 			$newPerson->addElectronicAddress($personElectronicAddress);
