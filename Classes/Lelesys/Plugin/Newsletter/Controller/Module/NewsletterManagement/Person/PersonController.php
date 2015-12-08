@@ -165,7 +165,7 @@ class PersonController extends NewsletterManagementController {
 			$newPerson->setName($singlePersonName);
 			$personElectronicAddress->setIdentifier($singlePerson['eMail']);
 			$personElectronicAddress->setApproved(TRUE);
-			$newPerson->addElectronicAddress($personElectronicAddress);
+			//$newPerson->addElectronicAddress($personElectronicAddress);
 			$newPerson->setPrimaryElectronicAddress($personElectronicAddress);
 			$newPerson->setAcceptsHtml(TRUE);
 			$newPerson->setSubscribedToNewsletter(TRUE);
