@@ -175,7 +175,7 @@ class PersonController extends NewsletterManagementController {
 			} else {
 				$newPerson->setGender(FALSE);
 			}
-			$newPerson->addGroup($this->partyService->findByTitle($groupTitle));
+			$newPerson->addGroup($this->partyService->findByTitle( trim($groupTitle) ));
 
 			$isExistingUser = $this->personService->isExistingUser($newPerson);
 			if (($isExistingUser !== NULL) && ($isExistingUser === TRUE)) {
@@ -186,7 +186,7 @@ class PersonController extends NewsletterManagementController {
 				$recipientCount++;
 			}
 		}
-		$header = 'Creatednew recipients.';
+		$header = 'Created new recipients.';
 		$message = 'Created '.$recipientCount.' new recipients from CSV. '.$recipientExistingCount.' already existed.';
 		$this->addFlashMessage($message, $header, \TYPO3\Flow\Error\Message::SEVERITY_OK);
 		$this->redirect('importCsv');

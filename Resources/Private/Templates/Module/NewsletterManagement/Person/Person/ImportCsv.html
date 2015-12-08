@@ -3,9 +3,9 @@
 <f:section name="Content">
     <f:render partial="Module\FlashMessage" arguments="{severityName: flashmessage}" />
     <f:form action="importList">
-        Groups:<f:for each="{groups}" as="singleGroup">
+        Available Groups:<f:for each="{groups}" as="singleGroup">
             {singleGroup.title}<br />
-        </f:for>
+        </f:for><br />
         <div class="row neos-content neos-container-fluid">
             <div class="neos-control-group">
                 <label for="groupTitle">Group Title</label>
