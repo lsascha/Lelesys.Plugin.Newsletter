@@ -133,11 +133,11 @@
 			</trans-unit>
 			<trans-unit id="lelesys.plugin.newsletter.user.confirmed" approved="yes">
 				<source>You have already confirmed your subscription.</source>
-				<target>Du hast bereits die Anmeldung bestätigt.</target>
+				<target>Sie haben ihre Anmeldung bereits erfolgreich bestätigt. Dankeschön!</target>
 			</trans-unit>
 			<trans-unit id="lelesys.plugin.newsletter.user.unsubscribed" approved="yes">
 				<source>You are now unsubscribed!</source>
-				<target>Du bist nun abgemeldet!</target>
+				<target>Sie sind nun von unserem Newsletter abgemeldet!</target>
 			</trans-unit>
 			<trans-unit id="lelesys.plugin.newsletter.recipient.delete" approved="yes">
 				<source>Deleted the recipient.</source>
@@ -345,7 +345,7 @@
 			</trans-unit>
 			<trans-unit id="lelesys.plugin.newsletter.unSubscribedUser" approved="yes">
 				<source>You have already unsubscribed!!!</source>
-				<target>Sie haben sich bereits abgemeldet!!!</target>
+				<target>Sie haben sich bereits abgemeldet.</target>
 			</trans-unit>
 			<trans-unit id="lelesys.plugin.newsletter.unSubscribe" approved="yes">
 				<source>Please click the button to unsubscribe newsletter!!</source>

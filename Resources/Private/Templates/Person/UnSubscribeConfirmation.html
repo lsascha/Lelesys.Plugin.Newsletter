@@ -7,13 +7,16 @@
 				<div class="controls">
 					<f:if condition="{recipient}">
 						<f:then>
-							<label>Hallo {recipient.primaryElectronicAddress.identifier},<br />
-								<f:translate id="lelesys.plugin.newsletter.unSubscribe"></f:translate></label><br />
-							<f:form.hidden name="recipient" value="{recipient.uuid}" />
-							<f:form.hidden name="code" value="{code}" />
-							<f:form.submit class="btn btn-primary neos-button" value="Abmelden" />
+							<div class="container"><div class="alert alert-info" role="alert">
+								<label>Hallo {recipient.name.fullName},<br />
+									schade, dass Sie sich von unserem Newsletter mit Ihrer E-Mail Adresse {recipient.primaryElectronicAddress.identifier} abmelden möchten.<br />
+									<f:translate id="lelesys.plugin.newsletter.unSubscribe"></f:translate></label><br />
+								<f:form.hidden name="recipient" value="{recipient.uuid}" />
+								<f:form.hidden name="code" value="{code}" />
+								<f:form.submit class="btn btn-primary neos-button" value="Abmelden" />
+							</div></div>
 						</f:then>
-						<f:else><f:translate id="lelesys.plugin.newsletter.unSubscribedUser"></f:translate></f:else>
+						<f:else><div class="container"><div class="alert alert-info" role="alert"><f:translate id="lelesys.plugin.newsletter.unSubscribedUser"></f:translate></div></div></f:else>
 					</f:if>
 				</div>
 			</div>
