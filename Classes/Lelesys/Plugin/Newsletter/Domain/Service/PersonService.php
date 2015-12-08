@@ -170,26 +170,30 @@ class PersonService {
 	 *
 	 * @param \Lelesys\Plugin\Newsletter\Domain\Model\Recipient\Person $newPerson Person object
 	 * @param string $currentLocale Current locale
+	 * @param boolean $skipConfirmMail skip confirm email to user
 	 * @return void
 	 */
-	public function create(\Lelesys\Plugin\Newsletter\Domain\Model\Recipient\Person $newPerson, $currentLocale = NULL) {
+	public function create(\Lelesys\Plugin\Newsletter\Domain\Model\Recipient\Person $newPerson, $currentLocale = NULL, $skipConfirmMail = FALSE) {
 		$newPerson->setSubscribedToNewsletter(TRUE);
 
 		$this->personRepository->add($newPerson);
-		// To check if the user is subcribed user
-		$code = sha1($newPerson->getPrimaryElectronicAddress()->getIdentifier() . $newPerson->getUuid());
-		$baseUrl = $this->bootstrap->getActiveRequestHandler()->getHttpRequest()->getBaseUri();
-		$values = array('url' => $baseUrl, 'code' => $code, 'user' => $newPerson);
 
-		$recipientAddress = $newPerson->getPrimaryElectronicAddress()->getIdentifier();
-		$recipientName = $newPerson->getName();
-		$subject = $this->settings['email']['subject'];
-		if (isset($this->settings['email']['template']['confirmation'][$currentLocale]) === TRUE) {
-			$message = $this->emailNotificationService->buildEmailMessage($values, 'html', $this->settings['email']['template']['confirmation'][$currentLocale]['templatePathAndFilename']);
-		} else {
-			$message = $this->emailNotificationService->buildEmailMessage($values, 'html', $this->settings['email']['template']['confirmation']['templatePathAndFilename']);
+		if ($skipConfirmMail !== TRUE) {
+			// To check if the user is subcribed user
+			$code = sha1($newPerson->getPrimaryElectronicAddress()->getIdentifier() . $newPerson->getUuid());
+			$baseUrl = $this->bootstrap->getActiveRequestHandler()->getHttpRequest()->getBaseUri();
+			$values = array('url' => $baseUrl, 'code' => $code, 'user' => $newPerson);
+
+			$recipientAddress = $newPerson->getPrimaryElectronicAddress()->getIdentifier();
+			$recipientName = $newPerson->getName();
+			$subject = $this->settings['email']['subject'];
+			if (isset($this->settings['email']['template']['confirmation'][$currentLocale]) === TRUE) {
+				$message = $this->emailNotificationService->buildEmailMessage($values, 'html', $this->settings['email']['template']['confirmation'][$currentLocale]['templatePathAndFilename']);
+			} else {
+				$message = $this->emailNotificationService->buildEmailMessage($values, 'html', $this->settings['email']['template']['confirmation']['templatePathAndFilename']);
+			}
+			$this->emailNotificationService->sendMail($subject, $message, $recipientAddress, $recipientName);
 		}
-		$this->emailNotificationService->sendMail($subject, $message, $recipientAddress, $recipientName);
 	}
 
 	/**
