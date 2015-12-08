@@ -125,7 +125,7 @@
 			</trans-unit>
 			<trans-unit id="lelesys.plugin.newsletter.user.approved" approved="yes">
 				<source>You have successfully confirmed your subscription to Newsletter.</source>
-				<target>Sie haben erfolgreich die Anmeldung zum Newsletter bestätigt.</target>
+				<target>Schön, dass Sie sich für unseren Newsletter interessieren!</target>
 			</trans-unit>
 			<trans-unit id="lelesys.plugin.newsletter.linkNotValid" approved="yes">
 				<source>The confirmation link is not valid.</source>
