@@ -164,6 +164,7 @@ class PersonController extends NewsletterManagementController {
 			$personElectronicAddress = new \TYPO3\Party\Domain\Model\ElectronicAddress();
 			$newPerson->setName($singlePersonName);
 			$personElectronicAddress->setIdentifier($singlePerson['eMail']);
+			$personElectronicAddress->setType(\TYPO3\Party\Domain\Model\ElectronicAddress::TYPE_EMAIL);
 			$personElectronicAddress->setApproved(TRUE);
 			//$newPerson->addElectronicAddress($personElectronicAddress);
 			$newPerson->setPrimaryElectronicAddress($personElectronicAddress);
