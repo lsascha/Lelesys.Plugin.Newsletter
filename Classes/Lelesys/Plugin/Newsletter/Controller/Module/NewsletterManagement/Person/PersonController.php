@@ -150,10 +150,10 @@ class PersonController extends NewsletterManagementController {
 	 * Import new recipients
 	 *
 	 * @param string $personCSVList CSV Person List
-	 * @param \Lelesys\Plugin\Newsletter\Domain\Model\Recipient\Group\Party $groups groups
+	 * @param \Doctrine\Common\Collections\Collection<\Lelesys\Plugin\Newsletter\Domain\Model\Recipient\Group\Party> $groups groups
 	 * @return void
 	 */
-	public function importListAction($personCSVList, \Lelesys\Plugin\Newsletter\Domain\Model\Recipient\Group\Party $groups) {
+	public function importListAction($personCSVList, \Doctrine\Common\Collections\Collection $groups) {
 		$csvArray = $this->centralService->csv_to_array ( $personCSVList );
 		$recipientCount = 0;
 		$recipientExistingCount = 0;
