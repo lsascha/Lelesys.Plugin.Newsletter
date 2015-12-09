@@ -3,17 +3,13 @@
 <f:section name="Content">
     <f:render partial="Module\FlashMessage" arguments="{severityName: flashmessage}" />
     <f:form action="importList">
-        Available Groups:<f:for each="{groups}" as="singleGroup">
-            {singleGroup.title}<br />
-        </f:for><br />
         <div class="row neos-content neos-container-fluid">
-            <div class="neos-control-group">
-                <label for="groupTitle">Group Title</label>
-                <div class="neos-controls">
-                    <f:form.textfield name="groupTitle" id="groupTitle" class="required not-empty" />
-                    <f:render partial="FormErrors" arguments="{for: 'groupTitle'}" />
+            <f:if condition="{groups}">
+                <div class="neos-control-group">
+                    <label for="groups"><f:translate id="lelesys.plugin.newsletter.groups"></f:translate></label>
+                    <f:form.select options="{groups}" optionLabelField="title" name="groups" id="groups" multiple="TRUE"></f:form.select>
                 </div>
-            </div>
+            </f:if>
             <div class="neos-control-group">
                 <label for="personCSVList">CSV List (with headline [firstName,lastName,eMail,gender])</label>
 

@@ -9,8 +9,7 @@
 						<f:then>
 							<div class="container"><div class="alert alert-info" role="alert">
 								<label>Hallo {recipient.name.fullName},<br />
-									schade, dass Sie sich von unserem Newsletter mit Ihrer E-Mail Adresse {recipient.primaryElectronicAddress.identifier} abmelden möchten.<br />
-									<f:translate id="lelesys.plugin.newsletter.unSubscribe"></f:translate></label><br />
+									schade, dass Sie sich von unserem Newsletter mit Ihrer E-Mail Adresse {recipient.primaryElectronicAddress.identifier} abmelden möchten.</label><br />
 								<f:form.hidden name="recipient" value="{recipient.uuid}" />
 								<f:form.hidden name="code" value="{code}" />
 								<f:form.submit class="btn btn-primary neos-button" value="Abmelden" />

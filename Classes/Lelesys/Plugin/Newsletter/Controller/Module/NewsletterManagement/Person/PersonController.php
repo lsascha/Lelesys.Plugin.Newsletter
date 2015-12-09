@@ -150,10 +150,10 @@ class PersonController extends NewsletterManagementController {
 	 * Import new recipients
 	 *
 	 * @param string $personCSVList CSV Person List
-	 * @param string $groupTitle Title of Group
+	 * @param \Lelesys\Plugin\Newsletter\Domain\Model\Recipient\Group\Party $groups groups
 	 * @return void
 	 */
-	public function importListAction($personCSVList, $groupTitle) {
+	public function importListAction($personCSVList, \Lelesys\Plugin\Newsletter\Domain\Model\Recipient\Group\Party $groups) {
 		$csvArray = $this->centralService->csv_to_array ( $personCSVList );
 		$recipientCount = 0;
 		$recipientExistingCount = 0;
@@ -175,7 +175,11 @@ class PersonController extends NewsletterManagementController {
 			} else {
 				$newPerson->setGender(FALSE);
 			}
-			$newPerson->addGroup($this->partyService->findByTitle( trim($groupTitle) ));
+			$newPerson->setGroups($groups);
+			/*foreach ($groups as $group) {
+				$newPerson->addGroup($group);
+			}*/
+			//$newPerson->addGroup($this->partyService->findByTitle( trim($groupTitle) ));
 
 			$isExistingUser = $this->personService->isExistingUser($newPerson);
 			if (($isExistingUser !== NULL) && ($isExistingUser === TRUE)) {
