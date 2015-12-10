@@ -31,14 +31,15 @@
 						<f:render partial="FormErrors" arguments="{for: 'newPerson.primaryElectronicAddress.identifier'}" />
 					</div>
 				</div>
-				<div class="form-group">
+                <f:form.hidden property="gender" value="0" />
+				<f:comment><!--<div class="form-group">
 					<label class="col-sm-2 control-label" for="gender"><f:translate id="lelesys.plugin.newsletter.gender"></f:translate></label>
 					<div class="col-sm-4">
 						<f:form.radio property="gender" value="0" /> <f:translate id="lelesys.plugin.newsletter.male"></f:translate>
 						<f:form.radio property="gender" value="1" /> <f:translate id="lelesys.plugin.newsletter.female"></f:translate>
 						<f:render partial="FormErrors" arguments="{for: 'newPerson.gender'}" />
 					</div>
-				</div>
+				</div>--></f:comment>
 				<f:if condition="{categories}">
 					<div class="form-group">
 						<label class="col-sm-2 control-label" for="categories"><f:translate id="lelesys.plugin.newsletter.categories"></f:translate></label>
