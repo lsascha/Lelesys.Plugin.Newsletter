@@ -151,6 +151,26 @@ class PersonService {
 		}
 	}
 
+
+	/**
+	 * gets existing user
+	 *
+	 * @param \Lelesys\Plugin\Newsletter\Domain\Model\Recipient\Person $newPerson Person object
+	 * @return \Lelesys\Plugin\Newsletter\Domain\Model\Recipient\Person
+	 */
+	public function getExistingUser(\Lelesys\Plugin\Newsletter\Domain\Model\Recipient\Person $newPerson) {
+		$existingUsers = $this->personRepository->isExistingUser($newPerson);
+		if (!empty($existingUsers)) {
+			// If register user is extending to Newsletter Person then there is possiblity of getting more recoreds
+			/** @var $existingUser /Lelesys\Plugin\Newsletter\Domain\Model\Recipient\Person */
+			foreach ($existingUsers as $existingUser) {
+				if (get_class($existingUser) === 'Lelesys\Plugin\Newsletter\Domain\Model\Recipient\Person') {
+					return $existingUser;
+				}
+			}
+		}
+	}
+
 	/**
 	 * Checks if user is approved
 	 *

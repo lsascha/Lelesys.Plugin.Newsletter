@@ -185,6 +185,11 @@ class PersonController extends NewsletterManagementController {
 			if (($isExistingUser !== NULL) && ($isExistingUser === TRUE)) {
 				// user exists
 				$recipientExistingCount++;
+
+				$existingUser = $this->personService->getExistingUser($newPerson);
+				$existingUser->setGroups($groups);
+				$this->personService->update($existingUser);
+
 			} else {
 				$this->personService->create($newPerson, NULL, TRUE);
 				$recipientCount++;
