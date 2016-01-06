@@ -170,7 +170,7 @@ class PersonController extends NewsletterManagementController {
 			$newPerson->setPrimaryElectronicAddress($personElectronicAddress);
 			$newPerson->setAcceptsHtml(TRUE);
 			$newPerson->setSubscribedToNewsletter(TRUE);
-			if ($singlePerson['gender'] == 'w') {
+			if ($singlePerson['gender'] == 'w' || $singlePerson['gender'] == 'f') {
 				$newPerson->setGender(TRUE);
 			} else {
 				$newPerson->setGender(FALSE);
