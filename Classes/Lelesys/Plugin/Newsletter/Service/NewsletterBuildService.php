@@ -171,6 +171,9 @@ class NewsletterBuildService {
 			$output = strip_tags($output, '<a>');
 		}
 
+		// remove script tags
+		$output = preg_replace('#<script(.*?)>(.*?)<\/script(.*?)>#is', '', $output);
+
 		return $output;
 	}
 
