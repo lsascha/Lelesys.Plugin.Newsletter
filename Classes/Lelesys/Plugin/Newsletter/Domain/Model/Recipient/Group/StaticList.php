@@ -23,6 +23,7 @@ class StaticList extends \Lelesys\Plugin\Newsletter\Domain\Model\Recipient\Abstr
 	 * RecipientList
 	 *
 	 * @var string
+	 * @ORM\Column(type="text")
 	 */
 	protected $recipientList;
 
