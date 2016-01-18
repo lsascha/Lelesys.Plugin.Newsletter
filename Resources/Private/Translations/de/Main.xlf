@@ -121,7 +121,7 @@
 			</trans-unit>
 			<trans-unit id="lelesys.plugin.newsletter.cannot.subscribed" approved="yes">
 				<source>Thank you. The confirmation email has been sent to your specified email address.</source>
-				<target>Vielen Dank. Die bestätigungs E-Mail wurde erfolgreich zur angegebenen E-Mail Adresse gesendet.</target>
+				<target>Vielen Dank. Die Bestätigungsmail wurde erfolgreich zur angegebenen E-Mail Adresse gesendet.</target>
 			</trans-unit>
 			<trans-unit id="lelesys.plugin.newsletter.user.approved" approved="yes">
 				<source>You have successfully confirmed your subscription to Newsletter.</source>
