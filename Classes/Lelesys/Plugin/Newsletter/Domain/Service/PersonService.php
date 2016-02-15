@@ -117,12 +117,21 @@ class PersonService {
 				$approved = $user->getPrimaryElectronicAddress()->isApproved();
 				if (($approved === TRUE) && ($code === $newcode)) {
 					$this->emailLogService->updateRecipient($user);
+					
+					// SL mod (send e-mail to admin on unsubscribe of user)
+					if ( $this->settings['email']['unsubscribeReportEmail'] ) {
+						$message = 'User unsubscribed from Newsletter with the Email Address: '.$user->getPrimaryElectronicAddress()->getIdentifier();
+						$this->emailNotificationService->sendMail($this->settings['email']['unsubscribeReportEmailSubject'], $message, $this->settings['email']['unsubscribeReportEmail'], $this->settings['email']['unsubscribeReportEmailName']);
+					}
+					
 					if (is_subclass_of($user, '\Lelesys\Plugin\Newsletter\Domain\Model\Recipient\Person') === TRUE) {
 						$user->setSubscribedToNewsletter(FALSE);
 						$this->update($user);
 					} else {
 						$this->deleteRecipient($user);
 					}
+
+
 					return 1;
 				} elseif ($code !== $newcode || $approved === FALSE) {
 					// Link not valid
