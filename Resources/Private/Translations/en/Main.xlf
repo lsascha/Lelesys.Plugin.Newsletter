@@ -539,6 +539,22 @@
 				<source>Inactive</source>
 				<target>Inactive</target>
 			</trans-unit>
+			<trans-unit id="lelesys.plugin.newsletter.csvImportButton" approved="yes">
+				<source>Import</source>
+				<target>Import</target>
+			</trans-unit>
+			<trans-unit id="lelesys.plugin.newsletter.csvImportField" approved="yes">
+				<source>CSV List (with headline [firstName,lastName,eMail,gender=m,f])</source>
+				<target>CSV List (with headline [firstName,lastName,eMail,gender=m,f])</target>
+			</trans-unit>
+			<trans-unit id="lelesys.plugin.newsletter.CsvImportTitle" approved="yes">
+				<source>CSV Import</source>
+				<target>CSV Import</target>
+			</trans-unit>
+			<trans-unit id="lelesys.plugin.newsletter.cannot.importRecipientCsv" approved="yes">
+				<source>Cannot import the CSV recipients at this time!!. Check if CSV and all mails are valid.</source>
+				<target>Cannot import the CSV recipients at this time!!. Check if CSV and all mails are valid.</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
