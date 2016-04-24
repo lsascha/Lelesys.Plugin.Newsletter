@@ -154,49 +154,56 @@ class PersonController extends NewsletterManagementController {
 	 * @return void
 	 */
 	public function importListAction($personCSVList, \Doctrine\Common\Collections\Collection $groups) {
-		$csvArray = $this->centralService->csv_to_array ( $personCSVList );
-		$recipientCount = 0;
-		$recipientExistingCount = 0;
 
-		foreach ($csvArray as $singlePerson) {
-			$newPerson = new \Lelesys\Plugin\Newsletter\Domain\Model\Recipient\Person();
-			$singlePersonName = new \TYPO3\Party\Domain\Model\PersonName('', $singlePerson['firstName'], '', $singlePerson['lastName']);
-			$personElectronicAddress = new \TYPO3\Party\Domain\Model\ElectronicAddress();
-			$newPerson->setName($singlePersonName);
-			$personElectronicAddress->setIdentifier($singlePerson['eMail']);
-			$personElectronicAddress->setType(\TYPO3\Party\Domain\Model\ElectronicAddress::TYPE_EMAIL);
-			$personElectronicAddress->setApproved(TRUE);
-			//$newPerson->addElectronicAddress($personElectronicAddress);
-			$newPerson->setPrimaryElectronicAddress($personElectronicAddress);
-			$newPerson->setAcceptsHtml(TRUE);
-			$newPerson->setSubscribedToNewsletter(TRUE);
-			if ($singlePerson['gender'] == 'w' || $singlePerson['gender'] == 'f') {
-				$newPerson->setGender(TRUE);
-			} else {
-				$newPerson->setGender(FALSE);
+		try {
+			$csvArray = $this->centralService->csv_to_array ( $personCSVList );
+			$recipientCount = 0;
+			$recipientExistingCount = 0;
+
+			foreach ($csvArray as $singlePerson) {
+				$newPerson = new \Lelesys\Plugin\Newsletter\Domain\Model\Recipient\Person();
+				$singlePersonName = new \TYPO3\Party\Domain\Model\PersonName('', $singlePerson['firstName'], '', $singlePerson['lastName']);
+				$personElectronicAddress = new \TYPO3\Party\Domain\Model\ElectronicAddress();
+				$newPerson->setName($singlePersonName);
+				$personElectronicAddress->setIdentifier($singlePerson['eMail']);
+				$personElectronicAddress->setType(\TYPO3\Party\Domain\Model\ElectronicAddress::TYPE_EMAIL);
+				$personElectronicAddress->setApproved(TRUE);
+				//$newPerson->addElectronicAddress($personElectronicAddress);
+				$newPerson->setPrimaryElectronicAddress($personElectronicAddress);
+				$newPerson->setAcceptsHtml(TRUE);
+				$newPerson->setSubscribedToNewsletter(TRUE);
+				if ($singlePerson['gender'] == 'w' || $singlePerson['gender'] == 'f') {
+					$newPerson->setGender(TRUE);
+				} else {
+					$newPerson->setGender(FALSE);
+				}
+				$newPerson->setGroups($groups);
+				/*foreach ($groups as $group) {
+					$newPerson->addGroup($group);
+				}*/
+				//$newPerson->addGroup($this->partyService->findByTitle( trim($groupTitle) ));
+
+				$isExistingUser = $this->personService->isExistingUser($newPerson);
+				if (($isExistingUser !== NULL) && ($isExistingUser === TRUE)) {
+					// user exists
+					$recipientExistingCount++;
+
+					$existingUser = $this->personService->getExistingUser($newPerson);
+					$existingUser->setGroups($groups);
+					$this->personService->update($existingUser);
+				} else {
+					$this->personService->create($newPerson, NULL, TRUE);
+					$recipientCount++;
+				}
 			}
-			$newPerson->setGroups($groups);
-			/*foreach ($groups as $group) {
-				$newPerson->addGroup($group);
-			}*/
-			//$newPerson->addGroup($this->partyService->findByTitle( trim($groupTitle) ));
-
-			$isExistingUser = $this->personService->isExistingUser($newPerson);
-			if (($isExistingUser !== NULL) && ($isExistingUser === TRUE)) {
-				// user exists
-				$recipientExistingCount++;
-
-				$existingUser = $this->personService->getExistingUser($newPerson);
-				$existingUser->setGroups($groups);
-				$this->personService->update($existingUser);
-			} else {
-				$this->personService->create($newPerson, NULL, TRUE);
-				$recipientCount++;
-			}
+			$header = 'Created new recipients.';
+			$message = 'Created '.$recipientCount.' new recipients from CSV. '.$recipientExistingCount.' already existed.';
+			$this->addFlashMessage($message, $header, \TYPO3\Flow\Error\Message::SEVERITY_OK);
+		} catch (Lelesys\Plugin\Newsletter\Domain\Service\Exception $exception) {
+			$header = 'Cannot import CSV recipients at this time!!.';
+			$message = $this->centralService->translate('lelesys.plugin.newsletter.cannot.importRecipientCsv');
+			$this->addFlashMessage($message, $header, \TYPO3\Flow\Error\Message::SEVERITY_ERROR);
 		}
-		$header = 'Created new recipients.';
-		$message = 'Created '.$recipientCount.' new recipients from CSV. '.$recipientExistingCount.' already existed.';
-		$this->addFlashMessage($message, $header, \TYPO3\Flow\Error\Message::SEVERITY_OK);
 		$this->redirect('importCsv');
 	}
 
