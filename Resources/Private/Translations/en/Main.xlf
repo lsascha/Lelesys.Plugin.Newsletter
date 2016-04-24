@@ -539,7 +539,7 @@
 				<source>Inactive</source>
 				<target>Inactive</target>
 			</trans-unit>
-			<trans-unit id="lelesys.plugin.newsletter.csvImportButton" approved="yes">
+			<trans-unit id="lelesys.plugin.newsletter.importButton" approved="yes">
 				<source>Import</source>
 				<target>Import</target>
 			</trans-unit>
