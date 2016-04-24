@@ -117,7 +117,7 @@ class PersonService {
 				$approved = $user->getPrimaryElectronicAddress()->isApproved();
 				if (($approved === TRUE) && ($code === $newcode)) {
 					$this->emailLogService->updateRecipient($user);
-					
+
 					// SL mod (send e-mail to admin on unsubscribe of user)
 					if ( $this->settings['email']['unsubscribeReportEmail'] ) {
 						$message = 'User unsubscribed from Newsletter with the Email Address: '.$user->getPrimaryElectronicAddress()->getIdentifier();
@@ -130,8 +130,6 @@ class PersonService {
 					} else {
 						$this->deleteRecipient($user);
 					}
-
-
 					return 1;
 				} elseif ($code !== $newcode || $approved === FALSE) {
 					// Link not valid
