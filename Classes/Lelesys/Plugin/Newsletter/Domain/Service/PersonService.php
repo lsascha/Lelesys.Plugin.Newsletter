@@ -121,7 +121,7 @@ class PersonService {
 					// SL mod (send e-mail to admin on unsubscribe of user)
 					if ( $this->settings['email']['unsubscribeReportEmail'] ) {
 						$message = 'User unsubscribed from Newsletter with the Email Address: '.$user->getPrimaryElectronicAddress()->getIdentifier();
-						$this->emailNotificationService->sendMail($this->settings['email']['unsubscribeReportEmailSubject'], $message, $this->settings['email']['unsubscribeReportEmail'], $this->settings['email']['unsubscribeReportEmailName']);
+						$this->emailNotificationService->sendMail($this->settings['email']['unsubscribeReportEmailSubject'], $message, NULL, $this->settings['email']['unsubscribeReportEmail'], $this->settings['email']['unsubscribeReportEmailName']);
 					}
 					
 					if (is_subclass_of($user, '\Lelesys\Plugin\Newsletter\Domain\Model\Recipient\Person') === TRUE) {
@@ -219,7 +219,7 @@ class PersonService {
 			} else {
 				$message = $this->emailNotificationService->buildEmailMessage($values, 'html', $this->settings['email']['template']['confirmation']['templatePathAndFilename']);
 			}
-			$this->emailNotificationService->sendMail($subject, $message, $recipientAddress, $recipientName);
+			$this->emailNotificationService->sendMail($subject, $message, NULL, $recipientAddress, $recipientName);
 		}
 	}
 
@@ -295,7 +295,7 @@ class PersonService {
 		$recipientAddress = $user->getPrimaryElectronicAddress()->getIdentifier();
 		$recipientName = $user->getName();
 		$message = $this->emailNotificationService->buildEmailMessage($template, $values);
-		$this->emailNotificationService->sendMail($subject, $message, $recipientAddress, $recipientName);
+		$this->emailNotificationService->sendMail($subject, $message, NULL, $recipientAddress, $recipientName);
 	}
 
 	/**

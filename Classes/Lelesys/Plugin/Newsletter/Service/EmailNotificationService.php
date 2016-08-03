@@ -49,14 +49,15 @@ class EmailNotificationService {
 	 * @param string $characterSet The email characterSet
 	 * @param array $attachments The email attachments
 	 * @param string $contentType The email contentType
-	 * @param string $message The message text
+	 * @param string $bodyHTML The message text as html
+	 * @param string $bodyPlain The message text as plain text
 	 * @param array $recipientAddress The recipient email address
 	 * @param string $recipientName The recipient name
 	 * @param array $bccAddresses Array of bcc email addresses
 	 * @param array $ccAddresses Array of cc email addresses
 	 * @return void
 	 */
-	public function sendNewsletterMail($fromEmail, $fromName, $replyEmail, $replyName, $subject, $priority = NULL, $characterSet = NULL, $attachments = NULL, $contentType = NULL, $recipientAddress, $message = NULL, $bccAddresses = array(), $ccAddresses = array()) {
+	public function sendNewsletterMail($fromEmail, $fromName, $replyEmail, $replyName, $subject, $priority = NULL, $characterSet = NULL, $attachments = NULL, $contentType = NULL, $recipientAddress, $bodyHTML = NULL, $bodyPlain = NULL, $bccAddresses = array(), $ccAddresses = array()) {
 		if(isset($this->settings['email']['ccAddresses']) && $this->settings['email']['ccAddresses'] != '') {
 			$ccAddresses = $this->settings['email']['ccAddresses'];
 		}
@@ -67,8 +68,8 @@ class EmailNotificationService {
 		$mail->setFrom(array($fromEmail => $fromName))
 				->setSubject($subject)
 				->setPriority($priority)
-				->setCharset($characterSet)
-				->setContentType($contentType);
+				->setCharset($characterSet);
+				//->setContentType($contentType);
 		if (!empty($attachments)) {
 			foreach ($attachments as $path => $fileName) {
 				$mail->attach(\Swift_Attachment::fromPath($path)->setFilename($fileName));
@@ -77,8 +78,18 @@ class EmailNotificationService {
 		$mail->setReplyTo(array($replyEmail => $replyName))
 				->setBcc($bccAddresses)
 				->setCc($ccAddresses)
-				->setTo($recipientAddress)
-				->setBody($message, 'text/html');
+				->setTo($recipientAddress);
+				//->setBody($message, 'text/html');
+				
+		if ( $contentType == 'text/html' && $bodyHTML !== NULL && $bodyHTML !== '' ) {
+			$mail->addPart($bodyHTML, 'text/html');
+
+			if ( $bodyPlain !== NULL && $bodyPlain !== '' ) {
+				$mail->addPart($bodyPlain, 'text/plain');
+			}
+		} else {
+			$mail->addPart($bodyPlain, 'text/plain');
+		}
 
 		$mail->send();
 	}
@@ -87,7 +98,8 @@ class EmailNotificationService {
 	 * Sends test mail of newsletter
 	 *
 	 * @param string $subject The email subject
-	 * @param string $message The message text
+	 * @param string $bodyHTML The message text as html
+	 * @param string $bodyPlain The message text as text
 	 * @param string $recipientAddress The recipient email address
 	 * @param string $recipientName The recipient name
 	 * @param array $attachments The email attachments
@@ -95,16 +107,27 @@ class EmailNotificationService {
 	 * @param array $ccAddresses Array of cc email addresses
 	 * @return void
 	 */
-	public function sendMail($subject, $message, $recipientAddress, $recipientName, $attachments = NULL, $bccAddresses = array(), $ccAddresses = array()) {
+	public function sendMail($subject, $bodyHTML, $bodyPlain, $recipientAddress, $recipientName, $attachments = NULL, $bccAddresses = array(), $ccAddresses = array()) {
 		$mail = new Message();
 		$mail
 				->setFrom(array($this->settings['email']['senderEmail'] => $this->settings['email']['senderName']))
 				->setSubject($subject)
 				->setReplyTo($this->settings['email']['replyTo'])
-				->setBody($message, 'text/html')
+				//->setBody($message, 'text/html')
 				->setTo(array($recipientAddress => $recipientName))
 				->setBcc($bccAddresses)
 				->setCc($ccAddresses);
+
+		if ( $contentType == 'text/html' && $bodyHTML !== NULL && $bodyHTML !== '' ) {
+			$mail->addPart($bodyHTML, 'text/html');
+
+			if ( $bodyPlain !== NULL && $bodyPlain !== '' ) {
+				$mail->addPart($bodyPlain, 'text/plain');
+			}
+		} else {
+			$mail->addPart($bodyPlain, 'text/plain');
+		}
+
 		if (!empty($attachments)) {
 			foreach ($attachments as $path => $fileName) {
 				$mail->attach(\Swift_Attachment::fromPath($path)->setFilename($fileName));

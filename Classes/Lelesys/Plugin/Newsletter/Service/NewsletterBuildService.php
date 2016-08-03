@@ -196,6 +196,8 @@ class NewsletterBuildService {
 			$replyEmail = $newsletter->getReplyToEmail();
 			$replyName = $newsletter->getReplyToName();
 			$newsletterAttachments = $newsletter->getAttachments();
+			$messageBodyPlain = NULL;
+			$messageBodyHtml = NULL;
 			$attachments = array();
 			foreach ($newsletterAttachments as $newsletterAttachment) {
 				$attachments[$this->resourceManager->getPersistentResourcesStorageBaseUri() . $newsletterAttachment->getResource()->getResourcePointer()->getHash()] = $newsletterAttachment->getTitle();
@@ -214,12 +216,27 @@ class NewsletterBuildService {
 					if ($newsletter->getHtmlBody() === NULL) {
 						$message = $this->buildMailContents($newsletter, 'html');
 						$newsletter->setHtmlBody($message);
-						$this->newsletterService->update($newsletter);
+						//$this->newsletterService->update($newsletter);
 					}
 
+					if ( $this->settings['email']['template']['txt'] ) {
+						if ($newsletter->getPlainTextBody() === NULL) {
+							$messagetxt = $this->buildMailContents($newsletter, 'txt');
+							$newsletter->setPlainTextBody($messagetxt);
+						}
+					}
+					$this->newsletterService->update($newsletter);
+
+
 					$values['mailContent'] = $newsletter->getHtmlBody();
+					$values['mailContentTxt'] = $newsletter->getPlainTextBody();
+
 					$recipientAddress = array($recipient->getPrimaryElectronicAddress()->getIdentifier() => $recipient->getName()->getFirstName());
-					$messageBody = $this->emailNotificationService->buildEmailMessage($values, 'html');
+					$messageBodyPlain = $this->emailNotificationService->buildEmailMessage($values, 'text/plain');
+					$messageBodyHtml = $this->emailNotificationService->buildEmailMessage($values, 'html');
+
+
+
 				} else {
 					$contentType = 'text/plain';
 					if ($newsletter->getPlainTextBody() === NULL) {
@@ -228,8 +245,8 @@ class NewsletterBuildService {
 						$this->newsletterService->update($newsletter);
 					}
 
-					$values['mailContent'] = $newsletter->getPlainTextBody();
-					$messageBody = $this->emailNotificationService->buildEmailMessage($values, 'txt');
+					$values['mailContentTxt'] = $newsletter->getPlainTextBody();
+					$messageBodyPlain = $this->emailNotificationService->buildEmailMessage($values, 'txt');
 					$recipientAddress = array($recipient->getPrimaryElectronicAddress()->getIdentifier() => $recipient->getName()->getFirstName());
 				}
 			} else {
@@ -240,19 +257,33 @@ class NewsletterBuildService {
 					$contentType = 'text/plain';
 				}
 
-				if ($newsletter->getPlainTextBody() === NULL) {
-					$message = $this->buildMailContents($newsletter, $this->settings['recipient']['static']['mailFormat']);
-					$newsletter->setPlainTextBody($message);
-					$this->newsletterService->update($newsletter);
+
+				if ($newsletter->getHtmlBody() === NULL) {
+					$message = $this->buildMailContents($newsletter, 'html');
+					$newsletter->setHtmlBody($message);
+					//$this->newsletterService->update($newsletter);
 				}
 
+
+				if ($newsletter->getPlainTextBody() === NULL) {
+					//$message = $this->buildMailContents($newsletter, $this->settings['recipient']['static']['mailFormat']);
+					$messagetxt = $this->buildMailContents($newsletter, 'txt');
+					$newsletter->setPlainTextBody($messagetxt);
+				}
+
+				$this->newsletterService->update($newsletter);
+
+
 				$values['recipient'] = $recipient;
-				$values['mailContent'] = $newsletter->getPlainTextBody();
-				$messageBody = $this->emailNotificationService->buildEmailMessage($values, $this->settings['recipient']['static']['mailFormat']);
+				$values['mailContent'] = $newsletter->getHtmlBody();
+				$values['mailContentTxt'] = $newsletter->getPlainTextBody();
+				//$messageBodyHtml = $this->emailNotificationService->buildEmailMessage($values, $this->settings['recipient']['static']['mailFormat']);
+				$messageBodyHtml = $this->emailNotificationService->buildEmailMessage($values, 'html');
+				$messageBodyPlain = $this->emailNotificationService->buildEmailMessage($values, 'txt');
 				$recipientAddress = array(trim($recipient));
 			}
 
-			$this->emailNotificationService->sendNewsletterMail($fromEmail, $fromName, $replyEmail, $replyName, $subject, $priority, $characterSet, $attachments, $contentType, $recipientAddress, $messageBody);
+			$this->emailNotificationService->sendNewsletterMail($fromEmail, $fromName, $replyEmail, $replyName, $subject, $priority, $characterSet, $attachments, $contentType, $recipientAddress, $messageBodyHtml, $messageBodyPlain);
 
 			$emailLog->setIsSent(1);
 			$emailLog->setTimeSent(new \DateTime());
