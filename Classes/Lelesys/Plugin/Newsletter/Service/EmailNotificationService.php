@@ -118,7 +118,7 @@ class EmailNotificationService {
 				->setBcc($bccAddresses)
 				->setCc($ccAddresses);
 
-		if ( $contentType == 'text/html' && $bodyHTML !== NULL && $bodyHTML !== '' ) {
+		if ( $bodyHTML !== NULL && $bodyHTML !== '' ) {
 			$mail->addPart($bodyHTML, 'text/html');
 
 			if ( $bodyPlain !== NULL && $bodyPlain !== '' ) {

@@ -233,7 +233,7 @@ class NewsletterService {
 			$attachments[$this->resourceManager->getPersistentResourcesStorageBaseUri() . $newsletterAttachment->getResource()->getResourcePointer()->getHash()] = $newsletterAttachment->getTitle();
 		}
 		$messageBody = $this->emailNotificationService->buildEmailMessage(array('mailContent' => $message), 'html');
-		$messageBodyPlain = $this->emailNotificationService->buildEmailMessage(array('mailContentTxt' => $message), 'txt');
+		$messageBodyPlain = $this->emailNotificationService->buildEmailMessage(array('mailContentTxt' => $messagetxt), 'txt');
 		$this->emailNotificationService->sendMail($subject, $messageBody, $messageBodyPlain, $adminEmail, $fromName, $attachments);
 	}
 
