@@ -53,7 +53,7 @@ class EmailValidator extends \TYPO3\Flow\Validation\Validator\AbstractValidator 
 		foreach ($emails[0] as $email) {
 			$validEmail = filter_var(trim($email), FILTER_VALIDATE_EMAIL);
 			if ($validEmail == FALSE) {
-				$this->addError('Please enter valid email Address', 1324641097);
+				$this->addError('Please enter valid email Address (Line: %1$s, Address: %2$s)', 1324641097, array( $i, trim($email) ) );
 				return;
 			}
 		}

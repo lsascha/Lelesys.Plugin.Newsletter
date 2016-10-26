@@ -428,8 +428,8 @@
 				<target>Recipient Email</target>
 			</trans-unit>
 			<trans-unit id="lelesys.plugin.newsletter.error.1324641097" approved="yes">
-				<source>Please enter valid email address</source>
-				<target>Please enter valid email address</target>
+				<source>Please enter valid email address (Line: %1$s, Address: %2$s)</source>
+				<target>Please enter valid email address (Line: %1$s, Address: %2$s)</target>
 			</trans-unit>
 			<trans-unit id="lelesys.plugin.newsletter.noLog" approved="yes">
 				<source>There are no any email logs</source>
