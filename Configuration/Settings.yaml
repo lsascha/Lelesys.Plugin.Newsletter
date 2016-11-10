@@ -8,11 +8,11 @@ Lelesys:
           mailFormat: txt
       email:
         subject: 'Confirm Subscription'
-        replyTo: gauri.shirodkar@lelesys.com
+        replyTo: 
         senderEmail: info@lelesys.com
         senderName: Lelesys
-        ccAddresses: sushant.chari@lelesys.com
-        bccAddresses: sushant.chari@lelesys.com
+        ccAddresses: 
+        bccAddresses: 
         baseUrl: 'http://demosite.local.com/'
         unSubscribeLink: lelesys.plugin.newsletter/person/unsubscribeconfirmation
         template:
